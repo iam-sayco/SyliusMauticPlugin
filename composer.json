@@ -1,0 +1,34 @@
+{
+    "name": "iam-sayco/sylius-mautic-plugin",
+    "type": "sylius-bundle",
+    "description": "Mautic integration plugin for Sylius.",
+    "keywords": ["Sylius", "Mautic", "Symfony"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name":     "Mariusz Andrzejewski",
+            "email":    "sayco@saycode.pl",
+            "homepage": "http://saycode.pl"
+        }
+    ],
+    "require": {
+        "ext-json": "*",
+        "php": "^8.0",
+        "mautic/api-library": "^3.1.0",
+        "sylius/sylius": "^1.10.0 || ^1.11.0 || ^1.12.0 || ^1.13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sayco\\SyliusMauticPlugin\\": "src/",
+            "Tests\\Sayco\\SyliusMauticPlugin\\Application\\": "tests/Application",
+            "Tests\\Sayco\\SyliusMauticPlugin\\Integration\\": "tests/PHPUnit/Integration"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Sayco\\SyliusMauticPlugin\\Behat\\": "tests/Behat",
+            "spec\\Sayco\\SyliusMauticPlugin\\": "spec/"
+        },
+        "classmap": ["tests/Application/Kernel.php"]
+    }
+}
