@@ -8,17 +8,22 @@ use Mautic\Api\Api;
 use Mautic\Auth\ApiAuth;
 use Mautic\Auth\AuthInterface;
 use Mautic\MauticApi;
-use Psr\Log\LoggerInterface;
+use Sayco\SyliusMauticPlugin\Http\Api\MauticApiInterface;
 use Sayco\SyliusMauticPlugin\Http\Exception\UnsupportedAuthenticationTypeException;
 
-final class MauticClient
+final class MauticClient implements MauticClientInterface
 {
     public function __construct(
         private array $authConfig,
-        private LoggerInterface $logger,
     ) {
     }
-
+    
+    public function getApi(string $context): Api
+    {
+        $api = new MauticApi();
+        return $api->newApi($context, $this->getAuth(), $this->authConfig['baseUrl']);
+    }
+    
     private function getAuth(): AuthInterface
     {
         $authType = $this->getAuthenticationType();
@@ -31,12 +36,6 @@ final class MauticClient
         throw new UnsupportedAuthenticationTypeException(
             "The authentication type '{$authType}' is not supported. Currently supported types are: 'BasicAuth'"
         );
-    }
-
-    public function getApi(string $context): Api
-    {
-        $api = new MauticApi();
-        return $api->newApi($context, $this->getAuth(), $this->authConfig['baseUrl']);
     }
 
     private function getAuthenticationType(): string
