@@ -1,9 +1,19 @@
 services:
+    sayco_sylius_mautiuc_plugin.event_listener.address:
+        class: Sayco\SyliusMauticPlugin\EventListener\AddressEventsListener
+        arguments:
+            - '@sayco_sylius_mautic_plugin.http.api.contacts'
+            - '@sayco_sylius_mautic_plugin.mapper.contact_data'
+        tags:
+            - { name: kernel.event_listener, event: sylius.address.post_create, method: onSave }
+            - { name: kernel.event_listener, event: sylius.address.post_update, method: onSave }
+
     sayco_sylius_mautiuc_plugin.event_listener.customer:
         class: Sayco\SyliusMauticPlugin\EventListener\CustomerEventsListener
         arguments:
             - '@sayco_sylius_mautic_plugin.http.api.contacts'
-            - '@sayco_sylius_mautic_plugin.mapper.customer_data'
+            - '@sayco_sylius_mautic_plugin.mapper.contact_data'
+            - '@sylius.repository.address'
         tags:
             - { name: kernel.event_listener, event: sylius.customer.post_create, method: onCreate }
             - { name: kernel.event_listener, event: sylius.customer.post_update, method: onUpdate }
@@ -20,7 +30,5 @@ services:
         arguments:
             - '@sayco_sylius_mautic_plugin.http.mautic_client'
     
-    sayco_sylius_mautic_plugin.mapper.customer_data:
-        class: Sayco\SyliusMauticPlugin\Mapper\CustomerDataMapper
-        arguments:
-            - '@sylius.repository.address'
+    sayco_sylius_mautic_plugin.mapper.contact_data:
+        class: Sayco\SyliusMauticPlugin\Mapper\ContactDataMapper

@@ -5,20 +5,17 @@ declare(strict_types=1);
 namespace Sayco\SyliusMauticPlugin\Mapper;
 
 use Sylius\Component\Addressing\Model\AddressInterface;
+use Sylius\Component\Addressing\Model\CountryInterface;
 use Sylius\Component\Core\Repository\AddressRepositoryInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;
+use Symfony\Component\Intl\Countries;
 
-final class CustomerDataMapper implements CustomerDataMapperInterface
+final class ContactDataMapper implements ContactDataMapperInterface
 {
-    public function __construct(
-        private AddressRepositoryInterface $addressRepository,
-    )
-    {
-    }
 
-    public function getData(CustomerInterface $customer): array
+    public function mapFromCustomer(CustomerInterface $customer): array
     {
-        $customer_data = [
+        $mapping = [
             'firstname' => $customer->getFirstName(),
             'lastname' => $customer->getLastName(),
             'email' => $customer->getEmail(),
@@ -28,25 +25,20 @@ final class CustomerDataMapper implements CustomerDataMapperInterface
             'optin' => (int) $customer->isSubscribedToNewsletter(),
         ];
 
-        $addresses = $this->addressRepository->findByCustomer($customer);
-        $address = reset($addresses);
+        return array_filter($mapping);
+    }
 
-        if (false === $address instanceof AddressInterface) {
-            return $customer_data;
-        }
-
-        $address_data = [
+    public function mapFromAddress(AddressInterface $address): array
+    {
+        $mapping = [
             'address1' => $address->getStreet(),
             'city' => $address->getCity(),
             'zipcode' => $address->getPostcode(),
-//            'country' => $address->getCountryCode(), - @todo: Mautic expects country name
+            'country' => Countries::getName($address->getCountryCode()),
             'state' => $address->getProvinceName(),
             'company' => $address->getCompany(),
         ];
 
-        $address_data = array_filter($address_data);
-        $customer_data = array_merge($customer_data, $address_data);
-
-        return $customer_data;
+        return array_filter($mapping);
     }
 }
