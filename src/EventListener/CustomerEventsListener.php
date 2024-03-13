@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sayco\SyliusMauticPlugin\EventListener;
 
-use Mautic\Api\Contacts;
 use Sayco\SyliusMauticPlugin\Http\Api\ContactsApiInterface;
 use Sayco\SyliusMauticPlugin\Mapper\ContactDataMapperInterface;
 use Sylius\Component\Addressing\Model\AddressInterface;
@@ -50,19 +49,19 @@ final class CustomerEventsListener
 
     private function createOrUpdateContact(CustomerInterface $customer, bool $new = false): array
     {
-        $mappping = $this->contactDataMapper->mapFromCustomer($customer);
+        $mapping = $this->contactDataMapper->mapFromCustomer($customer);
         $contact = $this->contactsApi->getContactByEmail($customer->getEmail());
         $contact_missing = null === $contact;
 
         if ($new || $contact_missing) {
-            $this->addAddressMapping($mappping, $customer);
+            $this->addAddressMapping($mapping, $customer);
         }
 
         if ($contact_missing) {
-            return $this->contactsApi->getApi()->create($mappping);
+            return $this->contactsApi->getApi()->create($mapping);
         }
 
-        return $this->contactsApi->getApi()->edit($contact['id'], $mappping);
+        return $this->contactsApi->getApi()->edit($contact['id'], $mapping);
     }
 
     private function addAddressMapping(array &$mapping, CustomerInterface $customer): void
@@ -75,6 +74,6 @@ final class CustomerEventsListener
         }
 
         $address_mapping = $this->contactDataMapper->mapFromAddress($address);
-        $mappping = array_merge($mappping, $address_mapping);
+        $mapping = array_merge($mapping, $address_mapping);
     }
 }
