@@ -1,6 +1,12 @@
 # Plugins parameters
 parameters:
     sayco_sylius_mautic.tracking_host: 'https://example.com'
+    sayco_sylius_mautic.tracking_config:
+        track_outbound: 'true'
+        track_mailto: 'true'
+        track_tel: 'true'
+        track_download: 'true'
+        track_download_extensions: [ ".pdf", ".zip", ".doc" ]
     sayco_sylius_mautic.api.auth:
         baseUrl: ''
         version: 'BasicAuth'
@@ -18,3 +24,4 @@ sylius_ui:
                     priority: 100
                     context:
                         tracking_host: '%sayco_sylius_mautic.tracking_host%'
+                        tracking_config: '%sayco_sylius_mautic.tracking_config%'

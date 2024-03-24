@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "outDir": "./src/Resources/public/js",
+    "rootDir": "./ts",
+    "target": "ES6",
+    "moduleResolution": "node",
+    "skipLibCheck": true
+  }
+}

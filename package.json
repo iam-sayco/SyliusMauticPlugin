@@ -1,0 +1,15 @@
+{
+  "name": "iam-sayco/sylius-mautic-plugin",
+  "version": "1.0.0",
+  "description": "Mautic tracking plugin for Sylius",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "author": "Mariusz Andrzejewski (Sayco)",
+  "license": "MIT",
+  "devDependencies": {
+    "anymatch": "^3.1.3",
+    "source-map": "^0.7.4",
+    "typescript": "^4.9.5"
+  }
+}

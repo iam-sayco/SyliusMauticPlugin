@@ -11,7 +11,7 @@ use Sayco\SyliusMauticPlugin\Http\MauticClientInterface;
 class ContactsApi implements ContactsApiInterface
 {
     public ?Contacts $api = null;
-    
+
     public function __construct(
         private MauticClientInterface $mauticClient,
     ) {
@@ -23,18 +23,18 @@ class ContactsApi implements ContactsApiInterface
         if (empty($contacts['contacts'])) {
             return null;
         }
-        
+
         $contact = reset($contacts['contacts']);
-        
+
         return $contact;
     }
-    
+
     public function getApi(): Api
     {
         if (null === $this->api) {
             $this->api = $this->mauticClient->getApi('contacts');
         }
-        
+
         return $this->api;
     }
 }

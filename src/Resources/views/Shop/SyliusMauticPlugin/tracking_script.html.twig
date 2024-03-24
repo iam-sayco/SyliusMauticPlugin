@@ -3,6 +3,20 @@
         w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)},a=d.createElement(t),
             m=d.getElementsByTagName(t)[0];a.async=1;a.src=u;m.parentNode.insertBefore(a,m)
     })(window,document,'script','{{ tracking_host }}/mtc.js','mt');
-
-    mt('send', 'pageview');
+</script>
+<script src="/bundles/saycosyliusmauticplugin/js/mautic_tracker.js"></script>
+<script>
+    (function() {
+        new MauticTracker({
+            trackOutbound: {{ tracking_config.track_outbound|default('true') }},
+            trackMailto: {{ tracking_config.track_mailto|default('true') }},
+            trackTel: {{ tracking_config.track_tel|default('true') }},
+            trackDownload: {{ tracking_config.track_download|default('true') }},
+            trackDownloadExtensions: [
+                {% for extension in tracking_config.track_download_extensions|default([]) %}
+                "{{ extension }}",
+                {% endfor %}
+            ],
+        });
+    })();
 </script>
