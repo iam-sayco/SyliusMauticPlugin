@@ -29,6 +29,19 @@ services:
         class: Sayco\SyliusMauticPlugin\Http\Api\ContactsApi
         arguments:
             - '@sayco_sylius_mautic_plugin.http.mautic_client'
+                
+    sayco_sylius_mautic_plugin.http.api.lead_devices:
+        class: Sayco\SyliusMauticPlugin\Http\Api\LeadDevicesApi
+        arguments:
+            - '@sayco_sylius_mautic_plugin.http.mautic_client'
     
     sayco_sylius_mautic_plugin.mapper.contact_data:
         class: Sayco\SyliusMauticPlugin\Mapper\ContactDataMapper
+        
+    sayco_sylius_mautic_plugin.context.lead:
+        class: Sayco\SyliusMauticPlugin\Context\LeadContext
+        arguments:
+            - '@sayco_sylius_mautic_plugin.http.api.lead_devices'
+            - '@sylius.context.customer'
+            - '@request_stack'
+            - '@session'

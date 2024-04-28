@@ -32,7 +32,9 @@ class ContactsApi implements ContactsApiInterface
     public function getApi(): Api
     {
         if (null === $this->api) {
-            $this->api = $this->mauticClient->getApi('contacts');
+            /** @var Contacts $api */
+            $api = $this->mauticClient->getApi('contacts');
+            $this->api = $api;
         }
 
         return $this->api;

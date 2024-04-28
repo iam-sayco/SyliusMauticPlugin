@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace Sayco\SyliusMauticPlugin\Mapper;
 
 use Sylius\Component\Addressing\Model\AddressInterface;
-use Sylius\Component\Addressing\Model\CountryInterface;
-use Sylius\Component\Core\Repository\AddressRepositoryInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;
 use Symfony\Component\Intl\Countries;
 
 final class ContactDataMapper implements ContactDataMapperInterface
 {
-
     public function mapFromCustomer(CustomerInterface $customer): array
     {
         $mapping = [

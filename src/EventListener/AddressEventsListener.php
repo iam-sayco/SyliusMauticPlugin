@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Sayco\SyliusMauticPlugin\EventListener;
 
-use Mautic\Api\Contacts;
 use Sayco\SyliusMauticPlugin\Http\Api\ContactsApiInterface;
 use Sayco\SyliusMauticPlugin\Mapper\ContactDataMapperInterface;
-use Sylius\Component\Addressing\Model\AddressInterface;
-use Sylius\Component\Core\Model\AddressInterface as CoreAddressInterface;
+use Sylius\Component\Core\Model\AddressInterface;
+use Sylius\Component\Customer\Model\CustomerAwareInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -24,15 +23,15 @@ final class AddressEventsListener
     {
         $address = $event->getSubject();
         assert($address instanceof AddressInterface);
-        assert($address instanceof CoreAddressInterface);
         $this->createOrUpdateContact($address);
     }
 
-    private function createOrUpdateContact(AddressInterface|CoreAddressInterface $address): ?array
+    private function createOrUpdateContact(AddressInterface $address): void
     {
+        /** @var CustomerAwareInterface $customer */
         $customer = $address->getCustomer();
         if (false === $customer instanceof CustomerInterface) {
-            return null;
+            return;
         }
 
         $address_mapping = $this->customerDataMapper->mapFromAddress($address);
@@ -41,9 +40,12 @@ final class AddressEventsListener
         if (null === $contact) {
             $customer_mapping = $this->customerDataMapper->mapFromCustomer($customer);
             $mapping = array_merge($customer_mapping, $address_mapping);
-            return $this->contactsApi->getApi()->create($mapping);
+
+            $this->contactsApi->getApi()->create($mapping);
+
+            return;
         }
 
-        return $this->contactsApi->getApi()->edit($contact['id'], $address_mapping);
+        $this->contactsApi->getApi()->edit($contact['id'], $address_mapping);
     }
 }
