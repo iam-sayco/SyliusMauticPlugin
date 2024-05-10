@@ -1,7 +1,7 @@
 # Plugins parameters
 parameters:
-    sayco_sylius_mautic.tracking_host: 'https://example.com'
     sayco_sylius_mautic.tracking_config:
+        host: 'https://example.com'
         track_outbound: 'true'
         track_mailto: 'true'
         track_tel: 'true'
@@ -23,5 +23,4 @@ sylius_ui:
                     template: "@SaycoSyliusMauticPlugin/Shop/SyliusMauticPlugin/tracking_script.html.twig"
                     priority: 100
                     context:
-                        tracking_host: '%sayco_sylius_mautic.tracking_host%'
                         tracking_config: '%sayco_sylius_mautic.tracking_config%'
